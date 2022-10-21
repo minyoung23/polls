@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>{{question.question_text}}</h1>
+{% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %} <!--적절한 입력임? 아니면 해커가 공격?-->
+        {% for choice in question.choice_set.all %} <!--Question 객체의 choice_set 속성에 들어있는 항목 모두를 의미-->
+            <input type="radio" name="choice" id="choice{{forloop.counter}}" value="{{choice.id}}">
+            <label for="choice{{forloop.counter}}">{{choice.choice_text}}</label><!--forloop.counter==>반복문의 반복 횟수 포함시킴-->
+        {% endfor %}
+    <input type="submit" value="vote">
+</form>
+</body>
+</html>
